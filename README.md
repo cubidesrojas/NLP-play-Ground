@@ -1,72 +1,49 @@
-# Manual-Based Chatbot with Transformers + RAG + Vector Database
+# Local RAG Chatbot (PDF + Chroma + Ollama + Gradio)
 
-**Goal:**  
-Build a chatbot that can answer questions about a specific manual using **Transformers** and **RAG (Retrieval-Augmented Generation)**.
-
----
-
-## 1. Overview
-
-- **RAG** combines:
-  1. **Retriever** → finds relevant sections from the manual
-  2. **Generator** → produces answers using the retrieved text
-- **Vector Database** stores embeddings of manual chunks for fast retrieval
-- Benefits:
-  - Efficient for large manuals
-  - Answers are grounded in the manual
-  - No need to fine-tune huge models on all manual content
+**Created by Christian Cubides**
 
 ---
 
-## 2. Project Steps
+## 🌟 About This Project
 
-### Step 1: Prepare the Manual
-- Collect the manual in **text or PDF format**
-- Preprocess:
-  - Split text into smaller chunks (300–500 words)
-  - Clean unnecessary headers or metadata
+This project represents **one of my first hands-on explorations into building with LLMs beyond prebuilt chat interfaces**. My goal was simple: move from *using AI* to *creating AI-powered tools*, learning the mechanics of **Retrieval-Augmented Generation (RAG)**, embeddings, and vector databases along the way.
 
-### Step 2: Create a Vector Database
-- Generate embeddings for each chunk using `SentenceTransformer`
-- Store embeddings in a **vector database** (FAISS, Chroma, Milvus, etc.)
-- This allows fast retrieval of relevant chunks
+Rather than relying on cloud APIs, I built a fully **local, self-contained chatbot** that can answer questions grounded in PDFs or manuals. This project demonstrates:
 
-### Step 3: Load RAG Model
-- Use Hugging Face’s `RagRetriever` + `RagTokenForGeneration`
-- Configure retriever to use your custom vector database
-
-### Step 4: Query the Chatbot
-- User asks a question
-- Retriever finds the most relevant manual chunks
-- Generator produces an answer based on retrieved text
-
-### Step 5: Deployment
-- Provide a Python script, CLI, or web interface
-- Optional: connect VS Code for local editing while running on a GPU (local or cloud)
+- Initiative to learn cutting-edge AI tools hands-on  
+- Ability to assemble multiple technologies into a coherent pipeline  
+- Understanding of embeddings, vector search, and LLM orchestration  
+- Commitment to producing functional, usable prototypes  
 
 ---
 
-## 3. Tools & Libraries
+## 🚀 Project Overview
 
-- **Python 3.8+**
-- **Transformers**
-- **Sentence Transformers** (for embeddings)
-- **FAISS / Chroma / Milvus** (vector store)
-- **PyTorch**
-- **Optional:** Remote GPU (AWS, GCP, Colab, etc.)
+This chatbot combines several components into a **retrieval-augmented system**:
 
----
-
-## 4. Notes
-
-- RAG + vector DB is ideal for **large manuals** where direct fine-tuning is expensive
-- Pretrained generator handles language understanding; retriever grounds answers in manual
-- GPU is recommended for faster training or inference
-- W&B logging is optional
+| Component | Technology | Purpose |
+|-----------|------------|---------|
+| Embeddings | `sentence-transformers/all-MiniLM-L6-v2` | Converts text chunks into dense vectors |
+| Vector Database | `ChromaDB` | Stores embeddings for fast retrieval |
+| LLM | `Ollama` (`llama3.1`) | Generates answers based on retrieved context |
+| PDF Loader | `PyPDFDirectoryLoader` | Loads manuals or documents from `/data` |
+| Text Splitter | `RecursiveCharacterTextSplitter` | Breaks documents into chunks (300 chars, 100 overlap) |
+| UI | `Gradio` | Streams responses in a web chat interface |
 
 ---
 
-## 5. Summary Flow
+## 🧩 How It Works
 
-1. **Manual → split into chunks → generate embeddings → store in vector DB**  
-2. **User question → retriever → generator → answer returned**
+1. **Ingest Documents**
+   - PDFs are loaded from `/data`
+   - Text is split into overlapping chunks
+   - Each chunk is embedded and stored in `ChromaDB`
+
+2. **Answer Questions**
+   - User submits a query via Gradio
+   - Retriever finds top 5 relevant chunks from the vector database
+   - LLaMA generates an answer **using only the retrieved knowledge**
+   - Response is streamed live in the chat interface
+
+**Prompt Template Used:**
+
