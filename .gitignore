@@ -1,0 +1,30 @@
+# Virtual environments
+venv/
+.env/
+.venv/
+
+# Python cache & logs
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+*.log
+
+# Chroma / Vector store
+chroma_db/
+
+# HuggingFace / Transformers cache
+.cache/
+huggingface/
+
+# Ollama models
+*.bin
+*.pt
+*.safetensors
+
+# Gradio / Streamlit uploads
+tmp/
+uploads/
+
+# Jupyter
+.ipynb_checkpoints/
